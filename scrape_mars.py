@@ -6,14 +6,14 @@ import time
 
 def init_browser():
     # @NOTE: Replace the path with your actual path to the chromedriver
-    executable_path = {'executable_path': 'C:/Users/jplum/Documents/bootcamp/githubrepos/web-scraping-challenge/chromedriver.exe'}
+    executable_path = {'executable_path': 'C:/Users/jplum/chromedriver_win32/chromedriver.exe'}
     return Browser("chrome", **executable_path, headless=False)
 
 mars_data = {}
 
 def scrape():
 # def mars_news():
-
+    
     browser = init_browser()
 
     # URL for BeautifulSoup scraping
@@ -28,6 +28,8 @@ def scrape():
 
     title = title_soup.find('div', class_='content_title').find('a')
 
+    title = title.text
+
     # Read HTML from website and use BeautifulSoup to find the news title and paragraph text 
     html = browser.html
 
@@ -38,8 +40,10 @@ def scrape():
 
     paragraph = paragraph_soup.find('div', class_='article_teaser_body')
 
-    # mars_data['title'] = title
-    # mars_data['paragraph'] = paragraph
+    paragraph_text = paragraph.text
+
+    mars_data['title'] = title
+    mars_data['paragraph'] = paragraph_text
 
 # def mars_image():
 
@@ -50,6 +54,10 @@ def scrape():
 
     browser.visit(url3)
 
+    full_image = browser.find_by_id('full_image')
+    full_image.click()
+
+    time.sleep(3)
     # Read HTML from website and use BeautifulSoup to find the news title and paragraph text 
     html3 = browser.html
 
@@ -60,11 +68,7 @@ def scrape():
 
     featured_image_url = base_url3 + featured_image
 
-    # mars_data['featured_image_url'] = featured_image_url
-
-# def mars_facts():
-
-    # browser = init_browser()
+    mars_data['featured_image_url'] = featured_image_url
 
     # URL for pandas scraping
     url2 = 'https://space-facts.com/mars/'
@@ -79,6 +83,7 @@ def scrape():
 
     df = df.to_html()
 
+    mars_data['mars_facts'] = df
 # def hemispheres():
 
     url4 = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
@@ -97,15 +102,9 @@ def scrape():
         html5 = browser.html
         image_soup = bs(html5, 'html.parser')
         image5 = base_url4 + image_soup.find('img', class_="wide-image")['src']
-        image_urls.append({"title": title, "image url": image5})
+        image_urls.append({"title": title, "image_url": image5})
 
-    mars_data = {
-        "Latest Mars News": title,
-        "Mars News Paragraph": paragraph,
-        "Mars Featured Image": featured_image_url,
-        "Mars Facts": df,
-        "Mars Hemispheres": image_urls
-    }
+    mars_data['hemisphere_image_urls'] = image_urls
 
     browser.quit()
 

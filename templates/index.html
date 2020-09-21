@@ -16,10 +16,34 @@
       <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
     </div>
 
-    <img src="{{ mars_data.featured_img_url }}" alt="Sloth">
+    
     <h2>Latest Mars News</h2>
     <h3>{{ mars_data.title }}</h3>
-    <h3>{{ mars_data.paragraph }}</h3>
+    <p>{{ mars_data.paragraph }}</p>
+    <h2>Featured Mars Image</h2>
+    <img src= {{mars_data.featured_image_url}} alt="Featured Mars Image" />
+    
+    <div class="col-md-5"></div>
+    <h3>Mars Facts</h3>
+    {{mars_data.mars_facts|safe}}
+
+    <h3>Mars Hemispheres</h3>
+    <div class="row">
+        {% for item in mars_data.hemisphere_image_urls %}
+          <div class="col-md-6">
+          
+          <img src= {{item.image_url}} alt="Hemisphere Image" />
+          <h3>"{{ item.title }}"</h3>
+          </div>
+        {% endfor %}
+
+    </div>
+  </div>          
+      </div>
+
+    </div>
+
+
 
   </div>
   </div>
